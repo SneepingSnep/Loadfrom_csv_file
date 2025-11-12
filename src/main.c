@@ -18,53 +18,65 @@ Example:
 %1$s max-age           (input from stdin, output to stdout)
 )";
 
-// void filter_stream(FILE *istream, FILE *ostream) {
-//   char line[LINE_MAX];
-//   char *fgets_return;
-//   char *name, *age_str;
-//   size_t line_no = 0;
+void filter_stream(FILE *istream, FILE *ostream) {
+  char line[LINE_MAX];
+  char *fgets_return;
+  char *name, *age_str;
+  size_t line_no = 0;
 
-//   while (
-//       // Read a line from `istream` and assign the return value to
-//       // `fgets_return`
-//       // YOUR CODE HERE
-//   ) {
-//     ++line_no;
+  while ((fgets_return = fgets(line, LINE_MAX, istream))) {
+    ++line_no;
 
-//     if (fgets_return && *fgets_return != '\n') {
-//       if (strlen(line) > 1) {
-//         // Assign `name` and `age_str` using `strtok`
-//         // YOUR CODE HERE
+    if (fgets_return && *fgets_return != '\n') {
+      if (strlen(line) > 1) {
+        name = strtok(fgets_return, DELIM);
+        age_str = strtok(NULL, DELIM);
+        // Assign `name` and `age_str` using `strtok`
+        // YOUR CODE HERE
 
-//         // Alternative to strtok:
-//         // sscanf(line, "%*[^,],%d", &age);
+        // Alternative to strtok:
+        // sscanf(line, "%*[^,],%d", &age);
 
-//         if (!age_str) {
-//           // Error message
-//           // YOUR CODE HERE
-//           continue;
-//         }
-//       }
-//     } else {
-//       // Error message
-//       // YOUR CODE HERE
-//       continue;
-//     }
+        if (!age_str) {
+          // Error message
+          fprintf(stdout,
+                  "Line %zu: no age was given Patrick!!! I'm going to get "
+                  "furious soon...\n",
+                  line_no);
 
-//     // Age processing
-//     unsigned age;
-//     auto recognized_count = sscanf(age_str, "%d", &age);
-//     if (recognized_count == 1) {
-//       if (age <= filter_age_max) {
-//         // Forward input line to `ostream`
-//         // YOUR CODE HERE
-//       }
-//     } else {
-//       // Error message
-//       // YOUR CODE HERE
-//     }
-//   }
-// }
+          // YOUR CODE HERE
+          continue;
+        }
+      }
+    } else {
+      // Error message
+      fprintf(
+          stdout,
+          "Line %zu: Nothing to read here. There is a gap in the csv file.\n",
+          line_no);
+      // perror("Nothing to read here. There is a gap in the csv file.");
+      // YOUR CODE HERE
+      continue;
+    }
+
+    // Age processing
+    unsigned age;
+    int recognized_count = sscanf(age_str, "%d", &age);
+    if (recognized_count == 1) {
+      if (age <= filter_age_max) {
+        // Forward input line to `ostream`
+        fputs(age_str, ostream);
+        // YOUR CODE HERE
+      } else {
+        fprintf(stdout, "Line %zu: Age is to high bro!\n", line_no);
+      }
+    } else {
+      // Error message
+      fprintf(stdout, "Line %zu: Age is not a number\n", line_no);
+      // YOUR CODE HERE
+    }
+  }
+}
 
 int main(int argc, char *argv[]) {
   switch (argc) {
@@ -120,5 +132,5 @@ int main(int argc, char *argv[]) {
     // YOUR CODE HERE
   }
 
-  // filter_stream(istream, ostream);
+  filter_stream(istream, ostream);
 }

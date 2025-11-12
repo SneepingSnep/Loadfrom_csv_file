@@ -34,7 +34,9 @@ $(LINUXCLEAN):
 WINDOWSCC = clang
 SIMPLEFLAGS = -Wall -I../raylib/include
 RAYLIBFLAGS = -Wall -I../raylib/include -L../raylib/lib -lraylib -lmsvcrt  -lgdi32 -lwinmm 
-WCFLAGS = -Wall -Wextra -std=gnu2y -g -Iheaders $(RAYLIBFLAGS)
+WCFLAGS = -Wall -Wextra -std=gnu2y -g -Iheaders
+ARGS = 15 people-with-age.csv youhavenopowerhere!!.txt
+ARGSALT1 = 15
 WINDOWSDELCMD = del
 # Source and object files
 WINDOWSDEL =  .\src\main.o
@@ -50,9 +52,9 @@ WINDOWSCLEAN = cleanw
 #build
 
 $(WINDOWSTARGETalt): $(OBJALT)
-	$(WINDOWSCC) $(RAYLIBFLAGS) -o $@ $(OBJALT)
+	$(WINDOWSCC) $(WCFLAGS) -o $@ $(OBJALT)
 %.o: %.c
-	$(WINDOWSCC) -c $(RAYLIBFLAGS) $< -o $@
+	$(WINDOWSCC) -c $(WCFLAGS) $< -o $@
 
 $(WINDOWSTARGET): $(OBJ)
 	$(WINDOWSCC) $(RAYLIBFLAGS) -o $@ $(OBJ)
@@ -62,7 +64,7 @@ $(WINDOWSTARGET): $(OBJ)
 $(WINDOWSTARGET1alt): $(WINDOSOBJALT)
 	$(WINDOSOBJALT)
 $(WINDOWSTARGET1): $(WINDOWSOBJ1)
-	$(WINDOWSOBJ1)
+	$(WINDOWSOBJ1) $(ARGSALT1)
 
 $(WINDOWSCLEAN):
 	$(WINDOWSDELCMD) $(WINDOWSDEL)

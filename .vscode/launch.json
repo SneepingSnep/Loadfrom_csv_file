@@ -6,9 +6,7 @@
             "name": "Debug",
             "program": "${workspaceFolder}/main",
             "args": [
-                "15",
-                "temp.txt",
-                "youhavenopowerhere!!.txt"
+                "15"
             ],
             "preLaunchTask": "${defaultBuildTask}",
         }
