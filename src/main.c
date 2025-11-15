@@ -51,7 +51,7 @@ void filter_stream(FILE *istream, FILE *ostream) {
     int recognized_count = sscanf(age_str, "%d", &age);
     if (recognized_count == 1) {
       if (age <= filter_age_max) {
-        fprintf(ostream, "%s, %s", name, age_str);
+        fprintf(ostream, "%s,%s", name, age_str);
       } else {
         fprintf(stderr, "Line %zu: Age is to high bro!\n", line_no);
       }
