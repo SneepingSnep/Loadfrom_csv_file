@@ -6,7 +6,8 @@
             "name": "Debug",
             "program": "${workspaceFolder}/main",
             "args": [
-                "15"
+                "15",
+                "stdin"
             ],
             "preLaunchTask": "${defaultBuildTask}",
         }

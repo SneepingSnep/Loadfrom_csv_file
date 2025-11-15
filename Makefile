@@ -37,6 +37,9 @@ RAYLIBFLAGS = -Wall -I../raylib/include -L../raylib/lib -lraylib -lmsvcrt  -lgdi
 WCFLAGS = -Wall -Wextra -std=gnu2y -g -Iheaders
 ARGS = 15 people-with-age.csv youhavenopowerhere!!.txt
 ARGSALT1 = 15
+ARGSALT2 = 15 people-with-age.csv
+ARGSALT3 = 15 people-with-age.csv out.csv
+ARGSALT4 = 15 stdin out2.csv
 WINDOWSDELCMD = del
 # Source and object files
 WINDOWSDEL =  .\src\main.o
@@ -45,7 +48,10 @@ WINDOSOBJALT = ./mainwalt.exe
 # Target executable
 WINDOWSTARGET = mainw
 WINDOWSTARGETalt = mainwalt
-WINDOWSTARGET1 = gow
+WINDOWSTARGET1 = gow1
+WINDOWSTARGET2 = gow2
+WINDOWSTARGET3 = gow3
+WINDOWSTARGET4 = gow4
 WINDOWSTARGET1alt = gowalt
 WINDOWSCLEAN = cleanw
 #
@@ -65,6 +71,12 @@ $(WINDOWSTARGET1alt): $(WINDOSOBJALT)
 	$(WINDOSOBJALT)
 $(WINDOWSTARGET1): $(WINDOWSOBJ1)
 	$(WINDOWSOBJ1) $(ARGSALT1)
+$(WINDOWSTARGET2): $(WINDOWSOBJ1)
+	$(WINDOWSOBJ1) $(ARGSALT2)
+$(WINDOWSTARGET3): $(WINDOWSOBJ1)
+	$(WINDOWSOBJ1) $(ARGSALT3)
+$(WINDOWSTARGET4): $(WINDOWSOBJ1)
+	$(WINDOWSOBJ1) $(ARGSALT4)
 
 $(WINDOWSCLEAN):
 	$(WINDOWSDELCMD) $(WINDOWSDEL)

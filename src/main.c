@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define LINE_MAX 100
-#define DELIM "," // CSV delimiter
+#define DELIM ","
 
 char *ifile, *ofile;
 unsigned filter_age_max;
@@ -31,49 +31,32 @@ void filter_stream(FILE *istream, FILE *ostream) {
       if (strlen(line) > 1) {
         name = strtok(fgets_return, DELIM);
         age_str = strtok(NULL, DELIM);
-        // Assign `name` and `age_str` using `strtok`
-        // YOUR CODE HERE
-
-        // Alternative to strtok:
-        // sscanf(line, "%*[^,],%d", &age);
 
         if (!age_str) {
-          // Error message
-          fprintf(stdout,
-                  "Line %zu: no age was given Patrick!!! I'm going to get "
+          fprintf(stderr,
+                  "Line %zu: no age was given my friend!!! I'm going to get "
                   "furious soon...\n",
                   line_no);
 
-          // YOUR CODE HERE
           continue;
         }
       }
     } else {
-      // Error message
-      fprintf(
-          stdout,
-          "Line %zu: Nothing to read here. There is a gap in the csv file.\n",
-          line_no);
-      // perror("Nothing to read here. There is a gap in the csv file.");
-      // YOUR CODE HERE
+      fprintf(stderr, "Line %zu: Nothing to read here.\n", line_no);
+
       continue;
     }
 
-    // Age processing
     unsigned age;
     int recognized_count = sscanf(age_str, "%d", &age);
     if (recognized_count == 1) {
       if (age <= filter_age_max) {
-        // Forward input line to `ostream`
-        fputs(age_str, ostream);
-        // YOUR CODE HERE
+        fprintf(ostream, "%s, %s", name, age_str);
       } else {
-        fprintf(stdout, "Line %zu: Age is to high bro!\n", line_no);
+        fprintf(stderr, "Line %zu: Age is to high bro!\n", line_no);
       }
     } else {
-      // Error message
-      fprintf(stdout, "Line %zu: Age is not a number\n", line_no);
-      // YOUR CODE HERE
+      fprintf(stderr, "Line %zu: Age is not a number\n", line_no);
     }
   }
 }
@@ -81,13 +64,13 @@ void filter_stream(FILE *istream, FILE *ostream) {
 int main(int argc, char *argv[]) {
   switch (argc) {
   case 4:
-    // max-age ifile ofile
+
     ofile = argv[3];
   case 3:
-    // max-age ifile
+
     ifile = argv[2];
   case 2:
-    // max-age
+
     if (!sscanf(argv[1], "%d", &filter_age_max)) {
       puts("First argument is not an age.");
       exit(EXIT_FAILURE);
@@ -98,38 +81,27 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
   }
 
-  if (ifile) {
+  if (ifile && strcmp(ifile, "stdin") != 0) {
     istream = fopen(ifile, "r");
     if (!istream) {
-      perror("Cant open file! Maybe file does not exist?");
+      fprintf(stderr, "Cant open file! Maybe file does not exist?");
+
       return EXIT_FAILURE;
     }
-    // Open `ifile` and assign it to `istream`
-    // YOUR CODE HERE
-
-    // Exit program with an error message if file cannot be opened
-    // YOUR CODE HERE
   } else {
     istream = stdin;
-    // Set `istream` if no file provided
-    // YOUR CODE HERE
   }
 
   if (ofile) {
     ostream = fopen(ofile, "w");
     if (!istream) {
-      perror("Cant create file! Maybe no permission to create file");
+      fprintf(stderr, "Cant create file! Maybe no permission to create file");
+
       return EXIT_FAILURE;
     }
-    // Open `ofile` and assign it to `ostream`
-    // YOUR CODE HERE
 
-    // Exit program with an error message if file cannot be opened
-    // YOUR CODE HERE
   } else {
     ostream = stdout;
-    // Set `ostream` if no file provided
-    // YOUR CODE HERE
   }
 
   filter_stream(istream, ostream);
